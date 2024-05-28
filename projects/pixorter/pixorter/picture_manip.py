@@ -3,6 +3,7 @@
 from pathlib import Path
 from typing import Generator, Iterable, Set
 
+from .constants import SUPPORTED_EXTENSIONS
 from .date_extract import get_snap_date
 from .file_manip import walk_dir
 from .picture import Picture
@@ -10,7 +11,8 @@ from .picture import Picture
 
 def collect_pictures(root_path: Path) -> Generator[Picture, None, None]:
     for file in walk_dir(root_path):
-        yield Picture(source_path=file, snap_date=get_snap_date(file))
+        if file.suffix in SUPPORTED_EXTENSIONS:
+            yield Picture(source_path=file, snap_date=get_snap_date(file))
 
 
 def get_path_couples(
